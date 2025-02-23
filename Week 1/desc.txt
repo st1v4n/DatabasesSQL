@@ -1,0 +1,1 @@
+Simple exercises, SELECT, FROM, WHERE, key words LIKE, OR, AND, DISTINCT, *, etc.
