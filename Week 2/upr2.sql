@@ -2,7 +2,13 @@
 use movies
 /* I */
 /* 1. Напишете заявка, която извежда имената на актьорите мъже, участвали във
-филма The Usual Suspects.*/select namefrom MOVIESTAR join STARSINON name = STARNAMEWHERE MOVIESTAR.GENDER = 'M' AND STARSIN.MOVIETITLE = 'The Usual Suspects'/* 2. Напишете заявка, която извежда имената на актьорите, участвали във филми от
+филма The Usual Suspects.*/
+
+select name
+from MOVIESTAR join STARSIN
+ON name = STARNAME
+WHERE MOVIESTAR.GENDER = 'M' AND STARSIN.MOVIETITLE = 'The Usual Suspects'
+/* 2. Напишете заявка, която извежда имената на актьорите, участвали във филми от
 1995, продуцирани от студио MGM.*/
 select distinct name
 from MOVIESTAR JOIN STARSIN
