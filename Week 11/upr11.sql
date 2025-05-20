@@ -1,0 +1,65 @@
+USE FLIGHTS
+/*1*/
+Alter table FLIGHTS
+add num_pass int ;
+Update flights set num_pass = 0;
+/*2*/
+alter table Agencies add num_book int;
+Update Agencies set num_book = 0;
+/*3*/
+CREATE TRIGGER tr_insert_after
+ON BOOKINGS
+AFTER INSERT
+AS
+BEGIN
+UPDATE FLIGHTS
+SET num_pass = num_pass+1
+WHERE FNUMBER IN (SELECT FLIGHT_NUMBER FROM INSERTED);
+END;
+
+CREATE TRIGGER tr_insert_after_num_book
+ON BOOKINGS
+AFTER INSERT
+AS
+BEGIN
+UPDATE AGENCIES
+SET num_book = num_book+1
+WHERE AGENCIES.NAME IN (SELECT AGENCY FROM INSERTED);
+END;
+
+SELECT * from BOOKINGS
+SELECT * FROM aGENCIES
+SELECT * FROM FLIGHTS
+INSERT INTO BOOKINGS VALUES ('AQ434Q', 'Aerofly', 'SU', 'TK1038', 7, '2021-04-27', '2021-12-25', 300.00, 1)
+
+/*4*/
+CREATE TRIGGER tr_delete_after_num_pass
+ON BOOKINGS
+AFTER DELETE
+AS
+BEGIN
+UPDATE FLIGHTS
+SET num_pass = num_pass-1
+WHERE FNUMBER IN (SELECT FLIGHT_NUMBER FROM deleted);
+END;
+
+CREATE TRIGGER tr_delete_after_num_book
+ON BOOKINGS
+AFTER DELETE
+AS
+BEGIN
+UPDATE AGENCIES
+SET num_book = num_book-1
+WHERE NAME IN (SELECT AGENCY FROM deleted);
+END;
+
+/*5*/
+CREATE TRIGGER tr_after_update_num_pass
+ON BOOKINGS
+AFTER UPDATE
+AS
+BEGIN
+UPDATE FLIGHTS
+SET num_pass = num_pass + ((SELECT STATUS FROM inserted) - (SELECT STATUS FROM deleted))
+WHERE FNUMBER IN (SELECT FLIGHT_NUMBER FROM inserted)
+END;
